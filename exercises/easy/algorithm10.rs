@@ -1,6 +1,6 @@
 /*
 	graph
-	This problem requires you to implement a basic graph functio
+	This problem requires you to implement a basic graph function
 */
 
 
@@ -29,7 +29,18 @@ impl Graph for UndirectedGraph {
         &self.adjacency_table
     }
     fn add_edge(&mut self, edge: (&str, &str, i32)) {
-        //TODO
+        let k1 = edge.0.to_string();
+        let k2 = edge.1.to_string();
+        let v1 = (edge.1.to_string(), edge.2);
+        let v2 = (edge.0.to_string(), edge.2);
+
+        self.adjacency_table.entry(k1).and_modify(|val| {
+            val.push(v1.clone());
+        }).or_insert(vec![v1]);
+
+        self.adjacency_table.entry(k2).and_modify(|val| {
+            val.push(v2.clone());
+        }).or_insert(vec![v2]);
     }
 }
 pub trait Graph {
@@ -37,11 +48,17 @@ pub trait Graph {
     fn adjacency_table_mutable(&mut self) -> &mut HashMap<String, Vec<(String, i32)>>;
     fn adjacency_table(&self) -> &HashMap<String, Vec<(String, i32)>>;
     fn add_node(&mut self, node: &str) -> bool {
-        //TODO
-		true
+		self.adjacency_table_mutable().insert(node.to_string(), vec![]);
+
+        true
     }
     fn add_edge(&mut self, edge: (&str, &str, i32)) {
-        //TODO
+        let k = edge.0.to_string();
+        let v = (edge.1.to_string(), edge.2);
+
+        self.adjacency_table_mutable().entry(k).and_modify(|val| {
+            val.push(v.clone());
+        }).or_insert(vec![v]);
     }
     fn contains(&self, node: &str) -> bool {
         self.adjacency_table().get(node).is_some()

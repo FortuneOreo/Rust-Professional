@@ -11,8 +11,44 @@
 
 use std::fmt::{self, Display, Formatter};
 
+fn matrix_swap(matrix: &mut Vec<Vec<i32>>, len: usize) {
+    for i in 0..len {
+        for j in i..len {
+            if i == j {
+                continue;
+            }
+            let temp = matrix[i][j];
+            matrix[i][j] = matrix[j][i];
+            matrix[j][i] = temp;
+        }
+    }
+}
+
 pub fn rotate_matrix_90_degrees(matrix: &mut Vec<Vec<i32>>) {
-    // TODO: Implement the logic to rotate the matrix 90 degrees in place
+    if matrix.len() == 0 {
+        return;
+    }
+
+    if matrix.len() < matrix[0].len() {
+        matrix_swap(matrix, matrix.len());
+        let mut v: Vec<i32> = Vec::new();
+        for i in 0..matrix.len() {
+            v.push(matrix[i].pop().unwrap());
+        }
+    } else if matrix.len() > matrix[0].len() {
+        matrix_swap(matrix, matrix[0].len());
+        let v = matrix.pop().unwrap();
+        let cnt = matrix[0].len();
+        for i in 0..cnt {
+            matrix[i].push(v[i]);
+        }
+    } else {
+        matrix_swap(matrix, matrix.len());
+    }
+
+    for line in matrix.into_iter() {
+        line.reverse();
+    }
 }
 
 #[cfg(test)]

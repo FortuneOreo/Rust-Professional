@@ -11,9 +11,47 @@
 
 use std::fmt::{self, Display, Formatter};
 
+fn matrix_mult(mat1: &[[i32;2];2], mat2: &[[i32;2];2]) -> [[i32;2];2] {
+    let mut res:[[i32;2];2] = [[0;2];2];
+
+    for i in 0..2 {
+        for j in 0..2 {
+            for k in 0..2 {
+                res[i][j] += mat1[i][k] * mat2[k][j];
+            }
+        }
+    }
+
+    res
+}
+
+fn quick_pow(mut mat: [[i32;2];2], mut n: i32) -> [[i32;2];2] {
+    let mut res = [[1, 0], [0, 1]];
+
+    while n > 0 {
+        if n & 1 == 1 {
+            res = matrix_mult(&mat, &res);
+        }
+        mat = matrix_mult(&mat, &mat);
+        n >>= 1;
+    }
+
+    res
+}
+
 pub fn fib(n: i32) -> i32 {
-    // TODO: Implement the logic to calculate the nth Fibonacci number using matrix exponentiation
-    0 // Placeholder return value
+    let matrix = [[1, 1], [1, 0]];
+
+    if n == 0 {
+        return 0;
+    }
+
+    if n == 1 {
+        return 1;
+    }
+
+    let res = quick_pow(matrix, n - 1);
+    res[0][0]
 }
 
 #[cfg(test)]

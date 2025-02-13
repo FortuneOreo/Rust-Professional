@@ -5,8 +5,27 @@
 */
 
 
-fn sort<T>(array: &mut [T]){
-	//TODO
+fn sort<T: PartialOrd>(array: &mut [T]) {
+	let count = array.len();
+    // bubble sorting
+    // for i in 0..count - 1 {
+    //     for j in i + 1..count {
+    //         if array[i] > array[j] {
+    //             array.swap(i, j);
+    //         }
+    //     }
+    // }
+
+    //select sorting
+    for i in 0..count - 1 {
+        let mut min_idx = i;
+        for j in i + 1..count {
+            if array[j] < array[min_idx] {
+                min_idx = j;
+            }
+        }
+        array.swap(i, min_idx);
+    }
 }
 #[cfg(test)]
 mod tests {

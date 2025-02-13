@@ -72,8 +72,17 @@ impl<T> LinkedList<T> {
             },
         }
     }
-	pub fn reverse(&mut self){
-		// TODO
+	pub fn reverse(&mut self) {
+		let mut new_list = Self::new();
+        let mut node_ptr = self.end;
+
+        while let Some(ptr) = node_ptr {
+            node_ptr = unsafe { (*ptr.as_ptr()).prev };
+            new_list.add(unsafe { Box::from_raw(ptr.as_ptr()).val});
+        }
+
+        self.start = new_list.start;
+        self.end = new_list.end;
 	}
 }
 

@@ -27,10 +27,22 @@ impl Graph {
 
     // Perform a breadth-first search on the graph, return the order of visited nodes
     fn bfs_with_return(&self, start: usize) -> Vec<usize> {
-        
-		//TODO
+        let mut q: VecDeque<usize> = VecDeque::new();
+        let mut visit_order: Vec<usize> = vec![];
 
-        let mut visit_order = vec![];
+        q.push_back(start);
+        visit_order.push(start);
+
+        while let Some(val) = q.pop_front() {
+            for item in &self.adj[val] {
+                if visit_order.contains(item) {
+                    continue;
+                }
+                q.push_back(*item);
+                visit_order.push(*item);
+            }
+        }
+
         visit_order
     }
 }
